@@ -1,35 +1,32 @@
 # Employee Attendance & Analytics API
 
-FastAPI + MongoDB service for employee attendance with analytics.
+A FastAPI + MongoDB backend for HR attendance: employees punch in and out, managers
+correct records with a full audit trail, and analytics answer questions about late
+patterns, department trends, and monthly summaries.
+
+Built against the contract in `openapi.yaml` and the data model in `DATA_MODEL.md`.
+
+---
+
+## Highlights
+
+- **12 endpoints** covering CRUD, punch-in/punch-out, corrections, four analytics
+  endpoints, and a MongoDB explain endpoint.
+- **Race-safe** punch-in / punch-out using unique compound indexes and atomic
+  `find_one_and_update`.
+- **Optimistic concurrency** on the PATCH (regularize) endpoint via history-length
+  guard — concurrent edits can't silently overwrite each other's audit trail.
+- **MongoDB aggregation pipelines** for all analytics (no Python loops).
+- **Indexes created idempotently** at startup — no manual setup.
+- **Business rules R1–R10** implemented, including overnight shifts, IST timezone
+  handling, half-up rounding, and competition ranking with ties.
+
+---
 
 ## Run
 
+```bash
 python -m venv .venv
-.venv\Scripts\activate
+.venv\Scripts\activate            # Windows
+# source .venv/bin/activate       # macOS / Linux
 pip install -r requirements.txt
-
-Create a `.env` file in the repo root:
-
-MONGO_URI=mongodb+srv://<user>:<password>@<cluster>.mongodb.net/
-MONGO_DB=attendance_db
-
-Load sample data (optional) and start the server:
-
-python sample_seed.py
-uvicorn app.main:app --port 8000
-
-API docs: http://localhost:8000/docs
-
-## What's implemented
-
-- All endpoints in openapi.yaml.
-- Indexes created idempotently at startup.
-- Business rules R1-R10 (timezone, overnight shifts, half-day, rounding, ties, headcount).
-- Analytics as MongoDB aggregation pipelines.
-- Race-safe punch-in/punch-out via unique indexes and atomic find_one_and_update.
-- Optimistic concurrency on PATCH via history-length check.
-
-## Notes
-
-- All application code lives in app/main.py.
-- See REVIEW.md for starter bugs found and fixed, DECISIONS.md for design notes.
