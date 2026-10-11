@@ -8,6 +8,16 @@ Built against the contract in `openapi.yaml` and the data model in `DATA_MODEL.m
 
 ---
 
+## Tech stack
+
+- **Python 3.11+** (developed on 3.13)
+- **FastAPI** for the HTTP layer and Pydantic v2 validation
+- **PyMongo** (synchronous driver) for MongoDB
+- **MongoDB 6.0+** (developed on Atlas, MongoDB 7.0)
+- **Uvicorn** as the ASGI server
+
+---
+
 ## Highlights
 
 - **12 endpoints** covering CRUD, punch-in/punch-out, corrections, four analytics
@@ -24,6 +34,9 @@ Built against the contract in `openapi.yaml` and the data model in `DATA_MODEL.m
 ---
 
 ## Run
+
+Prerequisites: Python 3.11+ and a MongoDB 6.0+ instance (local Docker or a free
+Atlas cluster).
 
 ```bash
 python -m venv .venv
